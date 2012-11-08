@@ -163,8 +163,9 @@ class WizardComponent extends Component {
  * Main Component method.
  *
  * @param string $step Name of step associated in $this->steps to be processed.
+ * @param array $actionParams Params to pass to the action.
  */		
-	public function process($step) {
+	public function process($step, $actionParams = array()) {
 		if (isset($this->controller->request->data['Cancel'])) {
 			if (method_exists($this->controller, '_beforeCancel')) {
 				$this->controller->_beforeCancel($this->_getExpectedStep());
@@ -205,7 +206,7 @@ class WizardComponent extends Component {
 					
 					$processCallback = '_' . Inflector::variable('process_' . $this->_currentStep);
 					if (method_exists($this->controller, $processCallback)) {
-						$proceed = $this->controller->$processCallback();
+						$proceed = call_user_func_array(array($this->controller, $processCallback), $actionParams);
 					} elseif ($this->autoValidate) {
 						$proceed = $this->_validateData();
 					} else {
@@ -238,7 +239,7 @@ class WizardComponent extends Component {
 			
 				$prepareCallback = '_' . Inflector::variable('prepare_' . $this->_currentStep);
 				if (method_exists($this->controller, $prepareCallback)) {
-					$this->controller->$prepareCallback();
+					call_user_func_array(array($this->controller, $prepareCallback), $actionParams);
 				}
 				
 				$this->config('activeStep', $this->_currentStep);
