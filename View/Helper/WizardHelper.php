@@ -87,30 +87,98 @@ class WizardHelper extends AppHelper {
 		$wizardConfig = $this->config();
 		extract($wizardConfig);	
 		
-		$attributes = array_merge(array('wrap' => 'div'), $attributes);
+		$attributes = array_merge(array('wrap' => 'div', 'container' => null, 'containerAttr' => '', 'useDelim' => false, 'innerHTML' => null), $attributes);
 		extract($attributes);
 		
 		$incomplete = null;
 
+		if(!empty($container)) {
+		    $this->output .= "<$container";
+		    if(!empty($containerAttr)) {
+		    	
+		    	if(is_array($containerAttr)) {
+		    		foreach($containerAttr as $k => $v) {
+		    			if(is_array($v)) {
+		    				$v = implode(' ', $v);
+		    			}
+		    			$this->output .= " $k=\"$v\"";		
+		    		}	
+		    	}
+		    	else {		    	
+			        $this->output .= " $containerAttr";
+		    	}
+		    }
+		    $this->output .= ">";
+		}
+		
+		$i = 0;
+		$last = count($steps)-1;
+		$open = false;
 		foreach ($steps as $title => $step) {
 			$title = empty($titles[$step]) ? $step : $titles[$step];
+			
+			$isFirst = $i == 0;
+			$isLast = $i == $last;
+			
+			$class = 'step' . ($i+1);			
+			
+			if($isFirst)
+			    $class .= ' first';
+			elseif($isLast)
+			    $class .= ' last';
+			$class .= " $step";	
+			
+			if ($step == $activeStep)
+				$open = true;					
 			
 			if (!$incomplete) {
 				if ($step == $expectedStep) {
 					$incomplete = true;
-					$class = 'expected';
+					$class .= ' expected';
 				} else {
-					$class = 'complete';
+					$class .= ' complete';
 				}
 				if ($step == $activeStep) {
 					$class .= ' active';
 				}
-				$this->output .= "<$wrap class='$class'>" . $this->Html->link($title, array('action' => $wizardAction, $step), $htmlAttributes, $confirmMessage, $escapeTitle) . "</$wrap>";
+				$element = $this->Html->link($title, array('action' => $wizardAction, $step), $htmlAttributes, $confirmMessage, $escapeTitle);
+				if(!empty($innerHTML))
+					$element = sprintf($innerHTML, $element);
+				$this->output .= "<$wrap class='step $class'>$element</$wrap>";				
 			} else {
-				$this->output .= "<$wrap class='incomplete'>" . $title . "</$wrap>";
+				$this->output .= "<$wrap class='step $class incomplete'><span class=\"text\">" . (empty($innerHTML) ? $title : sprintf($innerHTML, $title)) . "</span></$wrap>";				
 			}
+			
+			if($useDelim && !$isLast) {
+			    $delimClass = $open ? 'incomplete' : 'complete';			    
+			    $this->output .= "<$wrap class='delim $delimClass'>";
+			}			
+			
+			$i++;
 		}
+		
+		if(!empty($container))
+		    $this->output .= "</$container>";
 		
 		return $this->output;
 	}
+	
+/**
+ * Returns a set of html elements containing links for each step in the wizard.
+ * Default containter / element-wrapper = 'ul' / 'li'
+ *
+ * @see progressMenu()
+ * 
+ * @param string $titles
+ * @param string $attributes pass a value for 'wrap' to change the default tag used
+ * @param string $htmlAttributes
+ * @param string $confirmMessage
+ * @param string $escapeTitle
+ * @return string
+ */
+    public function progressMenuList($titles = array(), $attributes = array(), $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true)
+    {
+        $attributes = array_merge(array('wrap' => 'li', 'container' => 'ul'), $attributes);
+        return $this->progressMenu($titles, $attributes, $htmlAttributes, $confirmMessage, $escapeTitle);
+    }	
 }
