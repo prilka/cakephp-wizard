@@ -319,7 +319,7 @@ class WizardComponent extends Component {
 			return $this->Session->read($this->_sessionKey);
 		} else {
 			$wizardData = $this->Session->read("$this->_sessionKey.$key");
-			return !empty($wizardData) ? $wizardData : null;
+			return $wizardData;
 		}
 	}
 /**
