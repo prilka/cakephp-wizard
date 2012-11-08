@@ -73,6 +73,15 @@ class WizardHelper extends AppHelper {
 			return false;
 		}
 	}
+	
+	/**
+	 * Get the total step count.
+	 *
+	 * @return int
+	 */
+	public function stepCount()	{
+		return count((array)$this->config('steps'));
+	}	
 /**
  * Returns a set of html elements containing links for each step in the wizard. 
  *
