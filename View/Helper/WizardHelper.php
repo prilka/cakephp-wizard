@@ -1,29 +1,29 @@
 <?php
 /**
- * Wizard helper by jaredhoyt.
+ * Wizard helper by jaredhoyt (forked by prilka).
  *
  * Creates links, outputs step numbers for views, and creates dynamic progress menu as the wizard is completed.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Comments and bug reports welcome at jaredhoyt AT gmail DOT com
  *
  * Licensed under The MIT License
  *
- * @writtenby		jaredhoyt
- * @lastmodified	Date: March 11, 2009
+ * @writtenby		jaredhoyt, prilka
+ * @lastmodified	Date: Nov 8, 2012
  * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
  */ 
 class WizardHelper extends AppHelper {
-	var $helpers = array('Session','Html');
-	var $output = null;
+	public $helpers = array('Session','Html');
+	public $output = null;
 /**
  * undocumented function
  *
  * @param string $key optional key to retrieve the existing value
  * @return mixed data at config key (if key is passed)
  */
-	function config($key = null) {
+	public function config($key = null) {
 		if ($key == null) {
 			return $this->Session->read('Wizard.config');
 		} else {
@@ -45,7 +45,7 @@ class WizardHelper extends AppHelper {
  * @param string $escapeTitle 
  * @return string link to a specific step
  */
-	function link($title, $step = null, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true) {
+	public function link($title, $step = null, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true) {
 		if ($step == null) {
 			$step = $title;
 		}
@@ -60,7 +60,7 @@ class WizardHelper extends AppHelper {
  * @param string $shiftIndex optional offset of returned array index. Default 1
  * @return string step number. Returns false if not found
  */
-	function stepNumber($step = null, $shiftIndex = 1) {
+	public function stepNumber($step = null, $shiftIndex = 1) {
 		if ($step == null) {
 			$step = $this->config('activeStep');
 		}
@@ -83,7 +83,7 @@ class WizardHelper extends AppHelper {
  * @param string $escapeTitle 
  * @return string
  */
-	function progressMenu($titles = array(), $attributes = array(), $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true) {
+	public function progressMenu($titles = array(), $attributes = array(), $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true) {
 		$wizardConfig = $this->config();
 		extract($wizardConfig);	
 		
@@ -114,4 +114,3 @@ class WizardHelper extends AppHelper {
 		return $this->output;
 	}
 }
-?>
