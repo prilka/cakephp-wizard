@@ -316,13 +316,27 @@ class WizardComponent extends Component {
  * @return mixed The value of the session variable
  */
 	public function read($key = null) {
-		if ($key == null) {
-			return $this->Session->read($this->_sessionKey);
-		} else {
-			$wizardData = $this->Session->read("$this->_sessionKey.$key");
-			return $wizardData;
-		}
+		$sessionKey = $this->_sessionKey;
+		if(!is_null($key)) {
+			$sessionKey .= ".$key";
+		}		
+		return $this->Session->read($sessionKey);
 	}
+	
+/**
+ * Saves wizard-data into the session.
+ *
+ * @param string|null $key Name / path of the session variable. NULL = Set / replace all wizard-data
+ * @param mixed $data The value to store.
+ * @return boolean
+ */	
+	public function write($key, $data) {
+		$sessionKey = $this->_sessionKey;
+		if(!is_null($key)) {
+			$sessionKey .= ".$key";
+		}
+		return $this->Session->write($sessionKey, $data);
+	}	
 /**
  * Handles Wizard redirection. A null url will redirect to the "expected" step.
  *
@@ -376,7 +390,8 @@ class WizardComponent extends Component {
 		if (is_null($data)) {
 			$data = $this->controller->request->data;
 		}		
-		$this->Session->write("$this->_sessionKey.$step", $data);
+		
+		$this->write($step, $data);
 	}
 /**
  * Removes a branch from the steps array.
