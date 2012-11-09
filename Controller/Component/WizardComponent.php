@@ -337,6 +337,25 @@ class WizardComponent extends Component {
 		}
 		return $this->Session->write($sessionKey, $data);
 	}	
+	
+	/**
+	 * Convenience method to read / write step-data
+	 * 
+	 * @param $step Name of the step. NULL = current step
+	 * @param $data Data to save for the step. NULL = read step-data instead of write.
+	 * @return mixed TRUE/FALSE on save, else array with step-data.
+	 */
+	public function data($step = null, $data = null) {
+		if (is_null($step)) {
+			$step = $this->_currentStep;
+		}
+		if (is_null($data)) {
+			return $this->read($step);
+		}
+		else {
+			return $this->write($step, $data);
+		}
+	}
 /**
  * Handles Wizard redirection. A null url will redirect to the "expected" step.
  *
