@@ -15,3 +15,7 @@ Detailed documentation, including usage examples, can be found in the [GitHub wi
 ## Reporting issues
 
 If you have any issues with this plugin, please open a ticket on [Lighthouse](http://jaredhoyt.lighthouseapp.com/projects/60073-cakephp-wizard).
+
+## TODO
+
+* Merge with https://github.com/proloser/cakephp-wizard
