@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Helper;
+namespace CakeWizard\View\Helper;
 
 use Cake\View\Helper;
 use Cake\View\Helper\HtmlHelper;

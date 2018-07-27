@@ -16,7 +16,7 @@
  * @license            http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
-namespace App\Controller\Component;
+namespace CakeWizard\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Event\Event;
@@ -290,9 +290,11 @@ class WizardComponent extends Component {
         $this->config( 'action', $this->action );
 
         $this->_configSteps( $this->steps );
-        if( !in_array( 'Wizard', $this->controller->helpers ) &&
-            !array_key_exists( 'Wizard', $this->controller->helpers ) ) {
-            $this->controller->helpers[ 'Wizard' ] = [
+
+        $helper = 'CakeWizard.Wizard';
+        if( !in_array($helper, $this->controller->helpers ) &&
+            !array_key_exists($helper, $this->controller->helpers ) ) {
+            $this->controller->helpers[$helper] = [
                 'sessionRootKey' => $this->sessionRootKey,
             ];
         }

@@ -27,5 +27,15 @@
     },
     "extra": {
         "installer-name": "Wizard"
+    },
+    "autoload": {
+        "psr-4": {
+            "CakeWizard\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CakeWizard\\Test\\": "tests/"
+        }
     }
 }
