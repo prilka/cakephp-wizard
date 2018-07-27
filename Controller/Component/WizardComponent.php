@@ -22,6 +22,7 @@ use Cake\Controller\Component;
 use Cake\Event\Event;
 use Cake\Log\Log;
 use Cake\Utility\Inflector;
+use Cake\Network\Exception\NotImplementedException;
 
 class WizardComponent extends Component {
 
@@ -460,12 +461,12 @@ class WizardComponent extends Component {
                     if( method_exists( $this->controller, $processCallback ) ) {
                         $proceed = $this->controller->$processCallback();
                         if( !is_bool( $proceed ) ) {
-                            throw new NotImplementedException( sprintf( __( 'Process Callback Controller::%s should return boolean', $processCallback ) ) );
+                            throw new NotImplementedException(__('Process Callback Controller::{0} should return boolean', $processCallback));
                         }
                     } elseif( $this->autoValidate ) {
                         $proceed = $this->_validateData();
                     } else {
-                        throw new NotImplementedException( sprintf( __( 'Process Callback not found. Please create Controller::%s', $processCallback ) ) );
+                        throw new NotImplementedException(__('Process Callback not found. Please create Controller::{0}', $processCallback));
                     }
 
                     if( $proceed ) {
