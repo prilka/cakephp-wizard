@@ -17,7 +17,7 @@
         "ProLoser/CakePHP-Wizard": "dev-master"
     },
     "require": {
-        "php": ">=5.3.0",
+        "cakephp/cakephp": "^3.0",
         "composer/installers": "*"
     },
     "require-dev": {
