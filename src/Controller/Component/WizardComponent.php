@@ -493,10 +493,10 @@ class WizardComponent extends Component {
                 } elseif( $this->request->getData( 'Previous' ) != null && prev( $this->steps ) ) {
                     return $this->redirect( current( $this->steps ) );
                 } elseif( $this->request->getSession()->check( "$this->_sessionKey._draft.current" ) ) {
-                    $this->request->withParsedBody( $this->read( '_draft.current.data' ) );
+                    $this->request = $this->request->withParsedBody( $this->read( '_draft.current.data' ) );
                     $this->request->getSession()->delete( "$this->_sessionKey._draft.current" );
                 } elseif( $this->request->getSession()->check( "$this->_sessionKey.$this->_currentStep" ) ) {
-                    $this->request->withParsedBody( $this->read( $this->_currentStep ) );
+                    $this->request = $this->request->withParsedBody( $this->read( $this->_currentStep ) );
                 }
 
                 // Call Prepare Callback
