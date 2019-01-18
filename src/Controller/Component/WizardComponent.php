@@ -692,7 +692,7 @@ class WizardComponent extends Component {
             $url[ 0 ] = $step;
         } else {
             $url = [
-                'controller' => Inflector::underscore( $this->controller->getName() ),
+                'controller' => $this->controller->getName(),
                 'action'     => $this->action,
                 $step,
             ];
